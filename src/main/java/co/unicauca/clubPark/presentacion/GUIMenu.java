@@ -42,6 +42,7 @@ public class GUIMenu extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         btnRegVehiculo = new javax.swing.JMenuItem();
+        jMnuItemParqueadero = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
@@ -54,7 +55,6 @@ public class GUIMenu extends javax.swing.JFrame {
         setBackground(new java.awt.Color(255, 255, 255));
 
         MenuPrincipal.setBackground(new java.awt.Color(153, 255, 153));
-        MenuPrincipal.setPreferredSize(new java.awt.Dimension(0, 0));
 
         btnCerrarSesion.setBackground(new java.awt.Color(0, 0, 0));
         btnCerrarSesion.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 24)); // NOI18N
@@ -133,6 +133,14 @@ public class GUIMenu extends javax.swing.JFrame {
         });
         jMenu1.add(btnRegVehiculo);
 
+        jMnuItemParqueadero.setText("Agregar parqueadero");
+        jMnuItemParqueadero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMnuItemParqueaderoActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMnuItemParqueadero);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Ayudas");
@@ -154,13 +162,13 @@ public class GUIMenu extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(MenuPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE)
+                .addComponent(MenuPrincipal)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(MenuPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+                .addComponent(MenuPrincipal)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -202,6 +210,17 @@ public class GUIMenu extends javax.swing.JFrame {
                 + "Universidad del Cauca";
         mensajeExito(str, "Acerca De");
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMnuItemParqueaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuItemParqueaderoActionPerformed
+        // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(new Runnable(){
+            public void run(){
+                GUIRegParqueadero reg = new GUIRegParqueadero();
+                reg.setVisible(true);
+                reg.setLocationRelativeTo(null);
+            }
+        });
+    }//GEN-LAST:event_jMnuItemParqueaderoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -251,6 +270,7 @@ public class GUIMenu extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMnuItemParqueadero;
     private javax.swing.JLabel lbAd;
     private javax.swing.JLabel lbDirPar;
     private javax.swing.JLabel lbNomPar;

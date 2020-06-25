@@ -26,6 +26,8 @@ public class GUILogin extends javax.swing.JFrame {
     public static String atrNit;
     public static String atrDirParqueadero;
     public static String atrTelParqueadero;
+    public static String atrPuestosLibres;
+    public static String atrPuestosOcupados;
     private ResultSet rs;
     private Statement st = null;
     public GUILogin() {
@@ -69,7 +71,7 @@ public class GUILogin extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 18)); // NOI18N
-        jLabel1.setText("Inicio de Sesion");
+        jLabel1.setText("Iniciar sesión");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -159,6 +161,8 @@ public class GUILogin extends javax.swing.JFrame {
                 atrNomParqueadero = par.getNomParqueadero();
                 atrDirParqueadero = par.getDirecParqueadero();
                 atrTelParqueadero = par.getTelParqueadero();
+                atrPuestosLibres = par.getLibres();
+                atrPuestosOcupados = par.getOcupados();
                 GUIMenu ins = new GUIMenu();
                 ins.setExtendedState(MAXIMIZED_BOTH);
                 ins.setVisible(true);

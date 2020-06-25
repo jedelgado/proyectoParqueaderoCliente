@@ -3,6 +3,7 @@ package co.unicauca.clubPark.presentacion;
 import co.unicauca.clubPark.negocio.GestorParqueadero;
 import co.unicauca.clubPark.negocio.GestorRegVehiculo;
 import co.unicauca.clubPark.negocio.GestorVehiculo;
+import co.unicauca.clubPark.negocio.Parqueadero;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,11 @@ import javax.swing.JTextField;
  */
 public class GUIIngresoVehiculo extends javax.swing.JFrame {
 
+    public static Integer libre;
+    public static Integer ocupado;
+//    public static String libres = "0";
+//    public static String ocupados = "0";
+
     /**
      * Creates new form GUIIngresarVehiculo
      */
@@ -29,7 +35,7 @@ public class GUIIngresoVehiculo extends javax.swing.JFrame {
         txtNumCasillero.setEnabled(false);//desactiva la caja casillero
         txtNumCasillero.setText("0");//asignamos un valor de 0 por defecto al casillero
         jtxtPlacaVeh.setEditable(false);//desactiva la caja placa
-        
+
     }
 
     /**
@@ -274,6 +280,7 @@ public class GUIIngresoVehiculo extends javax.swing.JFrame {
     public String getJtxtFPlaca() {
         return this.jtxtPlacaVeh.getText();
     }
+
 //Metodo para limpiar las cajas de texto
     public void limpiar() {
         jtxtNumFichaVeh.setText(null);
@@ -289,7 +296,7 @@ public class GUIIngresoVehiculo extends javax.swing.JFrame {
         chLlaves.setSelected(false);
         txtNumCasillero.setText("0");
     }
-//Metodo que se encarga de guardar un vehiculo cuando le den click al boton guardar 
+//Metodo que se encarga de registrar un vehiculo en un parqueadero cuando se presiona el boton registrar 
     private void btnGuardarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarDatosActionPerformed
         // TODO add your handling code here:
         if (jtxtNumFichaVeh.getText().isEmpty() || jtxtPlacaVeh.getText().isEmpty()) {
@@ -298,7 +305,19 @@ public class GUIIngresoVehiculo extends javax.swing.JFrame {
         } else {
             GUILogin ini = new GUILogin();
             GestorRegVehiculo reg = new GestorRegVehiculo();
-            GestorVehiculo vehi = new GestorVehiculo();
+            Parqueadero par = new Parqueadero();
+            GestorParqueadero ges = new GestorParqueadero();
+
+//            try {
+////                libre = ini.atrPuestoslibres;
+////                ocupado = Integer.valueOf(par.getPuestosOcupados());
+//                libre = Integer.valueOf(ini.atrPuestosLibres);
+//                ocupado = Integer.valueOf(ini.atrNit);
+//
+//            } catch (Exception e) {
+//                System.out.println("Error al cambiar tipo de dato" + e);
+//            }
+
             //sacamos los valores de las cajas de texto 
             String NumFicha = jtxtNumFichaVeh.getText();
             String NumPlaca = jtxtPlacaVeh.getText();
@@ -306,13 +325,15 @@ public class GUIIngresoVehiculo extends javax.swing.JFrame {
             String HoraYFechaEntrada = jtxtFHoraFecha.getText();
             String Llaves;
             String EstadoVehiculo = "Ingresado";
+//            String ocupados = "";
+
             if (chLlaves.isSelected()) {
                 Llaves = "si";
             } else {
                 Llaves = "no";
             }
             String NumCascos = cmbNumCascos.getSelectedItem().toString();
-            String NitParqueadero = ini.atrNit;
+            
             String Casillero;
 
             if (txtNumCasillero.getText() == null) {
@@ -324,13 +345,33 @@ public class GUIIngresoVehiculo extends javax.swing.JFrame {
             String HoraFechaSalida = jblSalida.getText();
 
             try {
-
-                reg.ingresarRegVehiculo(NumFicha, NumPlaca, TipoVehiculo, HoraYFechaEntrada, EstadoVehiculo, Llaves, NumCascos, NitParqueadero, Casillero, Usuario, HoraFechaSalida);
-                JOptionPane.showMessageDialog(null, "Ingreso de vehiculo exitoso");
-                limpiar();
+                par = ges.consultarParqueadero(Usuario);
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Error al registrar");
+                    JOptionPane.showMessageDialog(null, "No se puede hacer el registro");
             }
+             
+            String libres = par.getLibres();
+            int libre = Integer.parseInt(libres);
+            String nit = ini.atrNit;
+            
+            if(libre == 0){
+                JOptionPane.showInternalMessageDialog(null, "No hay puestos disponibles en el parqueadero");
+            }else{
+                try {
+                    /**
+                     * Primero, actualizamos el aprqueadero, donde se resta 1 a los puestos libres y
+                     * se le suma 1 a los puestos ocupados de parqueadero.
+                     * Segundo, hacemos el registro del parqueadero con todos sus datos.
+                     */
+                    ges.actualizarIngreso(nit);
+                    reg.ingresarRegVehiculo(NumFicha, NumPlaca, TipoVehiculo, HoraYFechaEntrada, EstadoVehiculo, Llaves, NumCascos, nit, Casillero, Usuario, HoraFechaSalida);                 
+                    JOptionPane.showInternalMessageDialog(null, "Ingreso de vehiculo exitoso");
+                    limpiar();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Error al registrar");
+                }
+            }
+
             dispose();
             GUIBuscarVehiculo busc = new GUIBuscarVehiculo();
             busc.setVisible(true);

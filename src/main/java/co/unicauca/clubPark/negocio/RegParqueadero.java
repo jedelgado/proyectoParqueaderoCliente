@@ -1,46 +1,35 @@
 package co.unicauca.clubPark.negocio;
-
 /**
  *
- * @author javier
+ * @author Javier
  */
-public class Parqueadero {
+public class RegParqueadero {
+    
     private String nitParqueadero;
     private String nomParqueadero;
     private String direcParqueadero;
     private String telParqueadero;
     private String usuarioPar;
-    private String libres;
-    private String ocupados;
+    private String puestos;
 
-    //Constructor parametrizado de la clase parqueadero
-
-    public Parqueadero(String nitParqueadero, String nomParqueadero, String direcParqueadero, String telParqueadero, String usuarioPar, String puestosLibres, String puestosOcupados) {
+    public RegParqueadero(String nitParqueadero, String nomParqueadero, String direcParqueadero, String telParqueadero, String usuarioPar, String puestos) {
         this.nitParqueadero = nitParqueadero;
         this.nomParqueadero = nomParqueadero;
         this.direcParqueadero = direcParqueadero;
         this.telParqueadero = telParqueadero;
         this.usuarioPar = usuarioPar;
-        this.libres = puestosLibres;
-        this.ocupados = puestosOcupados;
-      
+        this.puestos = puestos;
     }
     
-    //Constructor sin parametros de la clase parqueadero
-    public Parqueadero(){
+    public RegParqueadero(){
         nitParqueadero = "";
-        nomParqueadero= "";
-        direcParqueadero= "";
-        telParqueadero= "";
-        usuarioPar= "";
-        libres= "";
-        ocupados= "";
-        
+        nomParqueadero = "";
+        direcParqueadero = "";
+        telParqueadero = "";
+        usuarioPar = "";
+        puestos = "";
     }
-    
-    /**
-     * Getters y Setters para los atributos de la clase Parqueadero
-     */
+
     public String getNitParqueadero() {
         return nitParqueadero;
     }
@@ -81,22 +70,14 @@ public class Parqueadero {
         this.usuarioPar = usuarioPar;
     }
 
-    public String getLibres() {
-        return libres;
+    public String getPuestos() {
+        return puestos;
     }
 
-    public void setLibres(String puestosLibres) {
-        this.libres = puestosLibres;
+    public void setPuestos(String puestos) {
+        this.puestos = puestos;
     }
-
-    public String getOcupados() {
-        return ocupados;
-    }
-
-    public void setOcupados(String puestosOcupados) {
-        this.ocupados = puestosOcupados;
-    }
-
+    
     
     
 }

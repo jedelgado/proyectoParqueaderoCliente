@@ -2,6 +2,7 @@ package co.unicauca.clubPark.acceso;
 
 import co.unicauca.clubPark.negocio.Parqueadero;
 import co.unicauca.clubPark.negocio.Persona;
+import co.unicauca.clubPark.negocio.RegParqueadero;
 import co.unicauca.clubPark.negocio.RegVehiculo;
 import co.unicauca.clubPark.negocio.Tarifa;
 import co.unicauca.clubPark.negocio.Vehiculo;
@@ -37,8 +38,7 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
         
         salida.println(solicitud);
         if (entrada.hasNextLine()) {
-            respuesta = entrada.nextLine();
-           
+            respuesta = entrada.nextLine();        
         }
         return respuesta;
     }
@@ -85,6 +85,84 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
         }
     }
     
+      //Metodo para consultar una persona
+    @Override
+    public Persona consultarPersona(String Usuario,String Contraseña)throws Exception{
+        String jsonPersona = null;
+        try{
+            conectar(IP_SERVIDOR, PUERTO);
+            jsonPersona = leerFlujoEntradaSalida("consultarPersona,"+Usuario+","+Contraseña);
+            cerrarFlujos();
+            desconectar();
+        }catch(IOException ex){
+            Logger.getLogger(ParqueaderoServicioImplSockets.class.getName()).log(Level.SEVERE, null,ex);
+        }
+        if (jsonPersona == null) {
+            throw new Exception("No se pudo conectar con el servidor");
+        }else{
+            if (!jsonPersona.equals("NO_ENCONTRADO")) {
+                Persona per = new Persona();
+                parseToPersona(per, jsonPersona);
+                return per;
+            }
+        }
+        return null;
+    }
+    
+    //Metodo para actualizar el parqueadero, cuando se ingresa un vehiculo
+    @Override
+    public void actualizarIngreso(String nit){
+        
+         try {
+           conectar(IP_SERVIDOR, PUERTO);
+           leerFlujoEntradaSalida("actualizarIngreso," + nit);
+           cerrarFlujos();
+           desconectar();
+       } catch (Exception ex) {
+            Logger.getLogger(ParqueaderoServicioImplSockets.class.getName()).log(Level.SEVERE,null,ex);
+       }   
+    } 
+    
+    //Metodo para actualizar el parqueadero, cuando se retira un vehiculo
+    @Override
+    public void actualizarSalida(String nit){
+        
+         try {
+           conectar(IP_SERVIDOR, PUERTO);
+           leerFlujoEntradaSalida("actualizarSalida," + nit);
+           cerrarFlujos();
+           desconectar();
+       } catch (Exception ex) {
+            Logger.getLogger(ParqueaderoServicioImplSockets.class.getName()).log(Level.SEVERE,null,ex);
+       }   
+    } 
+   
+     //Metodo que para actualizar estado del vehiculo cuando sea retirado 
+    @Override
+    public void actualizarRegVehiculo(String Placa, String HoraFechaSalida) {
+
+        try {
+            conectar(IP_SERVIDOR, PUERTO);
+            leerFlujoEntradaSalida("actualizarRegVehiculo," + Placa + "," + HoraFechaSalida);
+            cerrarFlujos();
+            desconectar();
+        } catch (IOException ex) {
+            Logger.getLogger(ParqueaderoServicioImplSockets.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Override
+    public void ingresarParqueadero(String nit, String nombre, String direccion, String telefono, String usuario, String libres, String ocupados){
+        try {
+            conectar(IP_SERVIDOR, PUERTO);
+            leerFlujoEntradaSalida("ingresarParqueadero," + nit+"," + nombre+ ","+ direccion+ ","+ telefono+ ","+ usuario+ ","+ libres+ ","+ ocupados);
+            cerrarFlujos();
+            desconectar();
+       } catch (Exception e) {
+           Logger.getLogger(ParqueaderoServicioImplSockets.class.getName()).log(Level.SEVERE,null,e);
+       }
+    }
+    
     //Metodo para consultar un vehiculo
     @Override
     public Vehiculo consultarVehiculo(String Placa)throws Exception{
@@ -110,29 +188,7 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
         return null;
     }
     
-    //Metodo para consultar una persona
-    @Override
-    public Persona consultarPersona(String Usuario,String Contraseña)throws Exception{
-        String jsonPersona = null;
-        try{
-            conectar(IP_SERVIDOR, PUERTO);
-            jsonPersona = leerFlujoEntradaSalida("consultarPersona,"+Usuario+","+Contraseña);
-            cerrarFlujos();
-            desconectar();
-        }catch(IOException ex){
-            Logger.getLogger(ParqueaderoServicioImplSockets.class.getName()).log(Level.SEVERE, null,ex);
-        }
-        if (jsonPersona == null) {
-            throw new Exception("No se pudo conectar con el servidor");
-        }else{
-            if (!jsonPersona.equals("NO_ENCONTRADO")) {
-                Persona per = new Persona();
-                parseToPersona(per, jsonPersona);
-                return per;
-            }
-        }
-        return null;
-    }
+  
     
     //Metodo para consultar un parqueadero
     @Override
@@ -286,6 +342,7 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
     //metodo para parsear de JSON a parqueadero
     private void parseToParqueadero(Parqueadero par,String Json){
         Gson gson = new Gson();
+         System.out.println(Json);
         Properties prop = gson.fromJson(Json, Properties.class);
         
         par.setNitParqueadero(prop.getProperty("nitParqueadero"));
@@ -293,6 +350,9 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
         par.setDirecParqueadero(prop.getProperty("direcParqueadero"));
         par.setTelParqueadero(prop.getProperty("telParqueadero"));
         par.setUsuarioPar(prop.getProperty("usuarioPar"));
+        par.setLibres(prop.getProperty("puestosLibres"));
+        par.setOcupados(prop.getProperty("puestosOcupados"));
+        
     }
     
     //metodo para parsear de JSON a RegVehiculo
@@ -314,6 +374,20 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
         reg.setRegHoraYFechaSalida(properties.getProperty("regHoraYFechaSalida"));
     }
     
+    private void parseToRegParqueadero(RegParqueadero reg, String Json){
+        Gson gson = new Gson();
+        System.out.println(Json);
+        Properties properties = gson.fromJson(Json, Properties.class);
+        
+        reg.setNitParqueadero(properties.getProperty("nitParqueadero"));
+        reg.setNomParqueadero(properties.getProperty("nomParqueadero"));
+        reg.setDirecParqueadero(properties.getProperty("direcParqueadero"));
+        reg.setTelParqueadero(properties.getProperty("telParqueadero"));
+        reg.setUsuarioPar(properties.getProperty("usuarioPar"));
+        reg.setPuestos(properties.getProperty("puestosLibres")); 
+        reg.setPuestos(properties.getProperty("puestosOcupados")); 
+    }
+    
     //metodo para parsear de JSON a tarifa
     private void parseToTarifa(Tarifa tari,String Json){
         Gson gson = new Gson();
@@ -327,18 +401,13 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
         tari.setValorTotal(prop.getProperty("ValorTotal"));
     }
     
-    //Metodo que para actualizar vehiculo cuando sea retirado 
-    @Override
-    public void actualizarRegVehiculo(String Placa, String HoraFechaSalida) {
+    
 
-        try {
-            conectar(IP_SERVIDOR, PUERTO);
-            leerFlujoEntradaSalida("actualizarRegVehiculo," + Placa + "," + HoraFechaSalida);
-            cerrarFlujos();
-            desconectar();
-        } catch (IOException ex) {
-            Logger.getLogger(ParqueaderoServicioImplSockets.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+   
+
+   
+
+   
+
     
 }

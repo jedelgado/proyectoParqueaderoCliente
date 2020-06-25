@@ -24,4 +24,18 @@ public class GestorParqueadero {
         return parqueadero.consultarParqueadero(Usuario);
     }
     
+     public void ingresarParqueadero(String nit,String nombre, String direccion,String telefono,String usuario, String libres, String ocupados){
+        this.parqueadero.ingresarParqueadero(nit, nombre, direccion, telefono, usuario, libres, ocupados);
+    }
+     
+    //actualiza el parqueadero, cada vez que se ocupe un puesto del parqueadero.
+    public void actualizarIngreso(String nit){
+        this.parqueadero.actualizarIngreso(nit);
+    } 
+    
+    //actualiza el parqueadero, cada vez que se libere un puesto del parqueadero.
+    public void actualizarSalida(String nit){
+        this.parqueadero.actualizarSalida(nit);
+    } 
+    
 }

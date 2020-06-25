@@ -12,7 +12,10 @@ import co.unicauca.clubPark.negocio.Vehiculo;
  */
 public interface IParqueadero {
     public void ingresarRegVehiculo(String numFicha,String Placa, String TipoVehiculo,String HoraFechaEntrada,String EstadoVehiculo,String Llaves,String NumCascos,String NitParqueadero,String NumCasillero,String Usuario,String HoraFechaSalida);
+    public void ingresarParqueadero(String nit, String nombre, String direccion, String telefono, String usuario, String libres, String ocupados);
     public Vehiculo consultarVehiculo(String Placa)throws Exception;
+    public void actualizarIngreso(String nit);
+    public void actualizarSalida(String nit);
     public RegVehiculo consultarRegVehiculoPlaca(String Placa)throws Exception;
     public RegVehiculo consultarRegVehiculoFicha(String Ficha)throws Exception;
     public void actualizarRegVehiculo(String Placa,String HoraFechaSalida);

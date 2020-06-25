@@ -3,6 +3,7 @@ package co.unicauca.clubPark.presentacion;
 import co.unicauca.clubPark.negocio.GestorParqueadero;
 import co.unicauca.clubPark.negocio.GestorRegVehiculo;
 import co.unicauca.clubPark.negocio.GestorTarifa;
+import co.unicauca.clubPark.negocio.Parqueadero;
 import co.unicauca.clubPark.negocio.RegVehiculo;
 import co.unicauca.clubPark.negocio.Tarifa;
 import java.text.ParseException;
@@ -22,7 +23,8 @@ public class GUISalidaVehiculo extends javax.swing.JFrame {
     /**
      * Creamos atributos staticos publicos para que puedan ser utilizados por otras vistas 
      */
-    
+    public static Integer libre;
+    public static Integer ocupado;
     public int atrHoras;
     public int atrMinutos;
     
@@ -194,7 +196,7 @@ public class GUISalidaVehiculo extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(83, 83, 83))))
+                        .addGap(96, 96, 96))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,19 +256,29 @@ public class GUISalidaVehiculo extends javax.swing.JFrame {
         jtxtFTotalAPagar.setText(null);
         
     }
-    //Metodo que actualiza el estado y fecha de salida del vehiculo cuando se le de al boton retirar 
+    //Metodo que actualiza el estado, fecha de salida y salida del vehiculo del parqueadero cuando se preseiona el boton retirar 
     private void btnRetirarVehActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirarVehActionPerformed
         
         GestorRegVehiculo gestorR = new GestorRegVehiculo();
         GUILogin iniciar = new GUILogin();
+        GestorParqueadero ges = new GestorParqueadero();
+        
         String Placa = jtxtPlacaVeh.getText();
         String HoraFechaSalida = lblHoraYFechaSalida.getText();
+        String nit = iniciar.atrNit;
+       
         if (jtxtFTotalAPagar.getText().isEmpty() || jtxtTiempoVeh.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe ingresar todos los campos");
         } else {
             try {
+                /**
+                 * Primero actualizamos el estado del vehiculo, de ingresado a retirado del parqueadero
+                 * Segundo actualizamos la salida del parqueadero, sumando uno a los puestos libres y rstando 1 a los ocupados.
+                 */
                 gestorR.actualizarRegVehiculo(Placa, HoraFechaSalida);
+                ges.actualizarSalida(nit);
                 JOptionPane.showMessageDialog(null, "Vehiculo retirado del parqueadero");
+                   
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Error al retirar el vehiculo");
             }
