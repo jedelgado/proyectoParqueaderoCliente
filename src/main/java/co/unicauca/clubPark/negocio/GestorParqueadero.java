@@ -17,23 +17,44 @@ public class GestorParqueadero {
     //Constructor con parametros
     public GestorParqueadero(IParqueadero i){
         parqueadero=i;
-    }
+    } 
     
-    //Busca al parqueadero en el servidor
+    /**
+     * Comprueba la existencia de un parqueadero en el servidor
+     * @param Usuario
+     * @return
+     * @throws Exception 
+     */
     public Parqueadero consultarParqueadero(String Usuario)throws Exception{
         return parqueadero.consultarParqueadero(Usuario);
     }
     
-     public void ingresarParqueadero(String nit,String nombre, String direccion,String telefono,String usuario, String libres, String ocupados){
+    /**
+     * Este metodo hace el registro de un nuevo parqueadero en la BD
+     * @param nit
+     * @param nombre
+     * @param direccion
+     * @param telefono
+     * @param usuario
+     * @param libres
+     * @param ocupados 
+    */
+    public void ingresarParqueadero(String nit,String nombre, String direccion,String telefono,String usuario, int libres, int ocupados){
         this.parqueadero.ingresarParqueadero(nit, nombre, direccion, telefono, usuario, libres, ocupados);
     }
      
-    //actualiza el parqueadero, cada vez que se ocupe un puesto del parqueadero.
+    /**
+     * actualiza el parqueadero, cada vez que se ocupe un puesto del parqueadero.
+     * @param nit 
+     */
     public void actualizarIngreso(String nit){
         this.parqueadero.actualizarIngreso(nit);
     } 
     
-    //actualiza el parqueadero, cada vez que se libere un puesto del parqueadero.
+    /**
+     * actualiza el parqueadero, cada vez que se libere un puesto del parqueadero.
+     * @param nit 
+     */
     public void actualizarSalida(String nit){
         this.parqueadero.actualizarSalida(nit);
     } 

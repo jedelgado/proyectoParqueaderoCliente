@@ -18,7 +18,12 @@ public class GestorVehiculo {
         parqueadero = i;
     }
     
-    //Metodo para consultar los datos del vehiculo o verificar la existencia de un vehiculo en el sistema
+    /**
+     * Metodo para consultar los datos del vehiculo o verificar la existencia de un vehiculo en el sistema
+     * @param Placa
+     * @return
+     * @throws Exception 
+     */
     public Vehiculo ConsultarVehiculo(String Placa)throws Exception{
         return parqueadero.consultarVehiculo(Placa);
     }

@@ -363,8 +363,9 @@ public class GUIIngresoVehiculo extends javax.swing.JFrame {
                      * se le suma 1 a los puestos ocupados de parqueadero.
                      * Segundo, hacemos el registro del parqueadero con todos sus datos.
                      */
-                    ges.actualizarIngreso(nit);
+                    
                     reg.ingresarRegVehiculo(NumFicha, NumPlaca, TipoVehiculo, HoraYFechaEntrada, EstadoVehiculo, Llaves, NumCascos, nit, Casillero, Usuario, HoraFechaSalida);                 
+                    ges.actualizarIngreso(nit);
                     JOptionPane.showInternalMessageDialog(null, "Ingreso de vehiculo exitoso");
                     limpiar();
                 } catch (Exception e) {

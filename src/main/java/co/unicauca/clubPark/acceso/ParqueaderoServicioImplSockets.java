@@ -48,6 +48,7 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
         salida.close();
         entrada.close();
     }
+    
     // desconecta el socket
     private void desconectar() {
         try {
@@ -85,6 +86,19 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
         }
     }
     
+    //Metodo para ingresar un nuevo parquedero
+    @Override
+    public void ingresarParqueadero(String nit, String nombre, String direccion, String telefono, String usuario, int libres, int ocupados){
+        try {
+            conectar(IP_SERVIDOR, PUERTO);
+            leerFlujoEntradaSalida("ingresarParqueadero," + nit+"," + nombre+ ","+ direccion+ ","+ telefono+ ","+ usuario+ ","+ libres+ ","+ ocupados);
+            cerrarFlujos();
+            desconectar();
+       } catch (Exception e) {
+           Logger.getLogger(ParqueaderoServicioImplSockets.class.getName()).log(Level.SEVERE,null,e);
+       }
+    }
+    
       //Metodo para consultar una persona
     @Override
     public Persona consultarPersona(String Usuario,String Contraseña)throws Exception{
@@ -109,7 +123,7 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
         return null;
     }
     
-    //Metodo para actualizar el parqueadero, cuando se ingresa un vehiculo
+    //Metodo para actualizar el parqueadero, cuando se ingresa un vehiculo a un parqueadero
     @Override
     public void actualizarIngreso(String nit){
         
@@ -123,7 +137,7 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
        }   
     } 
     
-    //Metodo para actualizar el parqueadero, cuando se retira un vehiculo
+    //Metodo para actualizar el parqueadero, cuando se retira un vehiculo de un parqueadero
     @Override
     public void actualizarSalida(String nit){
         
@@ -137,7 +151,7 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
        }   
     } 
    
-     //Metodo que para actualizar estado del vehiculo cuando sea retirado 
+     //Metodo que para actualizar el estado del vehiculo cuando sea retirado 
     @Override
     public void actualizarRegVehiculo(String Placa, String HoraFechaSalida) {
 
@@ -149,18 +163,6 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
         } catch (IOException ex) {
             Logger.getLogger(ParqueaderoServicioImplSockets.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    @Override
-    public void ingresarParqueadero(String nit, String nombre, String direccion, String telefono, String usuario, String libres, String ocupados){
-        try {
-            conectar(IP_SERVIDOR, PUERTO);
-            leerFlujoEntradaSalida("ingresarParqueadero," + nit+"," + nombre+ ","+ direccion+ ","+ telefono+ ","+ usuario+ ","+ libres+ ","+ ocupados);
-            cerrarFlujos();
-            desconectar();
-       } catch (Exception e) {
-           Logger.getLogger(ParqueaderoServicioImplSockets.class.getName()).log(Level.SEVERE,null,e);
-       }
     }
     
     //Metodo para consultar un vehiculo
@@ -187,8 +189,6 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
         }
         return null;
     }
-    
-  
     
     //Metodo para consultar un parqueadero
     @Override
@@ -313,6 +313,24 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
         return null;
     }
     
+     @Override
+    public void consultarPuestos(String nombre) throws Exception {
+        
+        String jsonParqueadero = null;
+        try{
+            conectar(IP_SERVIDOR, PUERTO);
+            jsonParqueadero=leerFlujoEntradaSalida("consultarPuestos,"+nombre);
+            cerrarFlujos();
+            desconectar();
+        }catch(IOException ex){
+            Logger.getLogger(ParqueaderoServicioImplSockets.class.getName()).log(Level.SEVERE, null,ex);
+        }
+        if (jsonParqueadero == null) {
+            throw new Exception("No se pudo conectar con el servidor");
+        }
+        
+    }
+    
     //metodo para parsear de JSON a vehiculo
     private void parseToVehiculo(Vehiculo vehi,String Json){
         
@@ -400,6 +418,8 @@ public class ParqueaderoServicioImplSockets implements IParqueadero{
         tari.setTarifaDia(prop.getProperty("tarifaDia"));
         tari.setValorTotal(prop.getProperty("ValorTotal"));
     }
+
+   
     
     
 

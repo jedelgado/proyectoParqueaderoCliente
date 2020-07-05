@@ -21,7 +21,13 @@ public class GestorPersona {
         parqueadero = i;
     }
     
-    //Consulta a un usuario dependiendo del usuario y contraseña que ingrese en el login
+    /**
+     * Consulta a un usuario dependiendo del usuario y contraseña que ingrese en el login
+     * @param Usuario
+     * @param Contraseña
+     * @return
+     * @throws Exception 
+     */
     public Persona consultarPersona(String Usuario, String Contraseña) throws Exception {
         return parqueadero.consultarPersona(Usuario, Contraseña);
     }

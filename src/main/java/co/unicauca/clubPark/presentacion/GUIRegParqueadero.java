@@ -35,7 +35,7 @@ public class GUIRegParqueadero extends javax.swing.JFrame{
         jLbNomPark2 = new javax.swing.JLabel();
         jLbNomPark3 = new javax.swing.JLabel();
         jLbNomPark4 = new javax.swing.JLabel();
-        jTextFPuestos = new javax.swing.JTextField();
+        jTextFPuestosOcupados = new javax.swing.JTextField();
         jTextFNit = new javax.swing.JTextField();
         jTextFNombre = new javax.swing.JTextField();
         jTextFDir = new javax.swing.JTextField();
@@ -44,8 +44,11 @@ public class GUIRegParqueadero extends javax.swing.JFrame{
         jBtnRegistrar = new javax.swing.JButton();
         jLbNomPark5 = new javax.swing.JLabel();
         jTextFTel = new javax.swing.JTextField();
+        jLbNomPark6 = new javax.swing.JLabel();
+        jTextFPuestosLibres = new javax.swing.JTextField();
 
         jDesktopPane1.setBackground(new java.awt.Color(153, 255, 153));
+        jDesktopPane1.setPreferredSize(new java.awt.Dimension(430, 460));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel1.setText("Registrar Parqueadero");
@@ -53,9 +56,9 @@ public class GUIRegParqueadero extends javax.swing.JFrame{
         jLabel1.setBounds(100, 20, 210, 20);
 
         jLbNomPark.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLbNomPark.setText("Puestos:");
+        jLbNomPark.setText("Puestos ocupados:");
         jDesktopPane1.add(jLbNomPark);
-        jLbNomPark.setBounds(50, 270, 80, 19);
+        jLbNomPark.setBounds(20, 310, 140, 19);
 
         jLbNomPark1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLbNomPark1.setText("Nit:");
@@ -76,8 +79,8 @@ public class GUIRegParqueadero extends javax.swing.JFrame{
         jLbNomPark4.setText("Usuario:");
         jDesktopPane1.add(jLbNomPark4);
         jLbNomPark4.setBounds(50, 230, 80, 19);
-        jDesktopPane1.add(jTextFPuestos);
-        jTextFPuestos.setBounds(160, 270, 70, 24);
+        jDesktopPane1.add(jTextFPuestosOcupados);
+        jTextFPuestosOcupados.setBounds(160, 310, 70, 24);
         jDesktopPane1.add(jTextFNit);
         jTextFNit.setBounds(160, 70, 110, 24);
         jDesktopPane1.add(jTextFNombre);
@@ -94,7 +97,7 @@ public class GUIRegParqueadero extends javax.swing.JFrame{
             }
         });
         jDesktopPane1.add(jBtnRegresar);
-        jBtnRegresar.setBounds(240, 322, 110, 40);
+        jBtnRegresar.setBounds(240, 390, 110, 40);
 
         jBtnRegistrar.setText("Guardar");
         jBtnRegistrar.addActionListener(new java.awt.event.ActionListener() {
@@ -103,7 +106,7 @@ public class GUIRegParqueadero extends javax.swing.JFrame{
             }
         });
         jDesktopPane1.add(jBtnRegistrar);
-        jBtnRegistrar.setBounds(100, 322, 100, 40);
+        jBtnRegistrar.setBounds(80, 390, 100, 40);
 
         jLbNomPark5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLbNomPark5.setText("Telefono:");
@@ -111,6 +114,13 @@ public class GUIRegParqueadero extends javax.swing.JFrame{
         jLbNomPark5.setBounds(50, 190, 80, 19);
         jDesktopPane1.add(jTextFTel);
         jTextFTel.setBounds(160, 190, 130, 24);
+
+        jLbNomPark6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLbNomPark6.setText("Puestos libres:");
+        jDesktopPane1.add(jLbNomPark6);
+        jLbNomPark6.setBounds(20, 280, 110, 19);
+        jDesktopPane1.add(jTextFPuestosLibres);
+        jTextFPuestosLibres.setBounds(160, 280, 70, 24);
 
         getContentPane().add(jDesktopPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -121,7 +131,8 @@ public class GUIRegParqueadero extends javax.swing.JFrame{
         jTextFDir.setText(null);
         jTextFTel.setText(null);
         jTextFUsuario.setText(null);
-        jTextFPuestos.setText(null);  
+        jTextFPuestosOcupados.setText(null);  
+        jTextFPuestosLibres.setText(null);  
        
     }
     private void jBtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnRegistrarActionPerformed
@@ -137,17 +148,17 @@ public class GUIRegParqueadero extends javax.swing.JFrame{
             String dir = jTextFDir.getText();
             String tel = jTextFTel.getText();
             String usuario = jTextFUsuario.getText();
-            String puestos = jTextFPuestos.getText();
-            String puestos2 = jTextFPuestos.getText();
+            int puestosLibres = Integer.parseInt(jTextFPuestosLibres.getText());
+            int puestosOcupados = Integer.parseInt(jTextFPuestosOcupados.getText());
             
             
             try {
-                reg.ingresarParqueadero(nit, nombre, dir, tel, usuario, puestos, puestos2);
+                reg.ingresarParqueadero(nit, nombre, dir, tel, usuario, puestosLibres, puestosOcupados);
                 JOptionPane.showMessageDialog(null, "Registro del parqueadero exitoso");
                 limpiar();
                 
             } catch (Exception e) {
-                 JOptionPane.showMessageDialog(null, "Error al guardar");
+                 JOptionPane.showMessageDialog(null, "Error al guardar" + e);
             }
             //dispose();
         }
@@ -202,10 +213,12 @@ public class GUIRegParqueadero extends javax.swing.JFrame{
     private javax.swing.JLabel jLbNomPark3;
     private javax.swing.JLabel jLbNomPark4;
     private javax.swing.JLabel jLbNomPark5;
+    private javax.swing.JLabel jLbNomPark6;
     private javax.swing.JTextField jTextFDir;
     private javax.swing.JTextField jTextFNit;
     private javax.swing.JTextField jTextFNombre;
-    private javax.swing.JTextField jTextFPuestos;
+    private javax.swing.JTextField jTextFPuestosLibres;
+    private javax.swing.JTextField jTextFPuestosOcupados;
     private javax.swing.JTextField jTextFTel;
     private javax.swing.JTextField jTextFUsuario;
     // End of variables declaration//GEN-END:variables

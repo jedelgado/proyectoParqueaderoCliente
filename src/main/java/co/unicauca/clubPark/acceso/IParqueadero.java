@@ -8,11 +8,11 @@ import co.unicauca.clubPark.negocio.Vehiculo;
 
 /**
  *Interfaz con todos los metodos que seran implementados en la clase
- * parqueaderoServiciospopcliente
+ * parqueaderoServicioImplSockets
  */
 public interface IParqueadero {
     public void ingresarRegVehiculo(String numFicha,String Placa, String TipoVehiculo,String HoraFechaEntrada,String EstadoVehiculo,String Llaves,String NumCascos,String NitParqueadero,String NumCasillero,String Usuario,String HoraFechaSalida);
-    public void ingresarParqueadero(String nit, String nombre, String direccion, String telefono, String usuario, String libres, String ocupados);
+    public void ingresarParqueadero(String nit, String nombre, String direccion, String telefono, String usuario, int libres, int ocupados);
     public Vehiculo consultarVehiculo(String Placa)throws Exception;
     public void actualizarIngreso(String nit);
     public void actualizarSalida(String nit);
@@ -24,6 +24,7 @@ public interface IParqueadero {
     public Tarifa consultarTarifa(String Horas,String Minutos)throws Exception;
     public Parqueadero consultarParqueadero(String Usuario)throws Exception;
     public Tarifa consultarTarifaMotos(String Horas,String Minutos)throws Exception;
-    public Persona consultarPersona(String Usuario,String Contraseña)throws Exception;    
+    public Persona consultarPersona(String Usuario,String Contraseña)throws Exception;
+    public void consultarPuestos(String nombre) throws Exception;
     
 }
